@@ -63,9 +63,9 @@ class CMakeBuild(build_ext):
         subprocess.check_call(['cmake', '--build', '.'] + build_args, cwd=self.build_temp)
 
 setup(
-    name = 'cyber_record',
+    name = 'cyber-record-util',
     version = '0.1',
-    description = 'cyber record',
+    description = 'standalone apollo cyber record reader/writer',
     author = 'Wei Mingzhi',
     author_email = 'weimingzhi@baidu.com',
     url = 'https://apollo.auto/',

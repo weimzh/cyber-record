@@ -1,0 +1,4 @@
+include CMakeLists.txt LICENSE README.md requirements.txt
+recursive-include cyber *.*
+recursive-include cyber_record *.*
+global-exclude *.o *.so *.dylib *.a .git
