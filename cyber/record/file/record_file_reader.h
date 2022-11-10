@@ -34,6 +34,10 @@
 #include "cyber/record/file/section.h"
 #include "cyber/time/time.h"
 
+#if GOOGLE_PROTOBUF_VERSION < 3004000
+#define ByteSizeLong ByteSize
+#endif
+
 namespace apollo {
 namespace cyber {
 namespace record {
@@ -92,5 +96,7 @@ bool RecordFileReader::ReadSection(int64_t size, T* message) {
 }  // namespace record
 }  // namespace cyber
 }  // namespace apollo
+
+#undef ByteSizeLong
 
 #endif  // CYBER_RECORD_FILE_RECORD_FILE_READER_H_

@@ -25,6 +25,7 @@
 #include <type_traits>
 #include <unordered_map>
 #include <utility>
+#include <atomic>
 
 #include "google/protobuf/io/zero_copy_stream_impl.h"
 #include "google/protobuf/message.h"
@@ -34,6 +35,10 @@
 #include "cyber/record/file/record_file_base.h"
 #include "cyber/record/file/section.h"
 #include "cyber/time/time.h"
+
+#if GOOGLE_PROTOBUF_VERSION < 3004000
+#define ByteSizeLong ByteSize
+#endif
 
 namespace apollo {
 namespace cyber {
@@ -162,5 +167,7 @@ bool RecordFileWriter::WriteSection(const T& message) {
 }  // namespace record
 }  // namespace cyber
 }  // namespace apollo
+
+#undef ByteSizeLong
 
 #endif  // CYBER_RECORD_FILE_RECORD_FILE_WRITER_H_

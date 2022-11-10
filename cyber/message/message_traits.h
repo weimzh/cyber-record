@@ -26,6 +26,10 @@
 #include "cyber/message/py_message_traits.h"
 #include "cyber/message/raw_message_traits.h"
 
+#if GOOGLE_PROTOBUF_VERSION < 3004000
+#define ByteSizeLong ByteSize
+#endif
+
 namespace apollo {
 namespace cyber {
 namespace message {
@@ -295,5 +299,7 @@ std::string GetMessageName() {
 }  // namespace message
 }  // namespace cyber
 }  // namespace apollo
+
+#undef ByteSizeLong
 
 #endif  // CYBER_MESSAGE_MESSAGE_TRAITS_H_
