@@ -14,6 +14,8 @@
  * limitations under the License.
  *****************************************************************************/
 
+#ifndef WITH_JAVA
+
 #include "cyber/python/internal/py_record.h"
 #include <limits>
 #include <set>
@@ -574,3 +576,5 @@ PyMODINIT_FUNC PyInit__cyber_record_wrapper(void) {
   AINFO << "init _cyber_record_wrapper";
   return PyModule_Create(&module_def);
 }
+
+#endif

@@ -22,7 +22,7 @@ protobuf_generate_cpp(PROTO_SRCS PROTO_HDRS
     cyber/proto/perf_conf.proto
 )
 
-add_library(_cyber_record_wrapper SHARED
+add_library(CyberRecordWrapper SHARED
     cyber/binary.cc
     cyber/message/protobuf_factory.cc
     cyber/common/global_data.cc
@@ -35,6 +35,7 @@ add_library(_cyber_record_wrapper SHARED
     cyber/record/file/record_file_reader.cc
     cyber/record/file/record_file_writer.cc
     cyber/python/internal/py_record.cc
+    cyber/jni/internal/jni_record.cc
     cyber/time/clock.cc
     cyber/time/duration.cc
     cyber/time/rate.cc
@@ -42,19 +43,32 @@ add_library(_cyber_record_wrapper SHARED
     ${PROTO_SRCS}
 )
 
-target_include_directories(_cyber_record_wrapper PRIVATE .
+if (JAVA)
+    include_directories("$ENV{JAVA_HOME}/include")
+    include_directories("$ENV{JAVA_HOME}/include/linux")
+    include_directories("$ENV{JAVA_HOME}/include/darwin")
+    add_definitions(-DWITH_JAVA)
+    set_target_properties(
+        CyberRecordWrapper
+        PROPERTIES
+        OUTPUT_NAME "CyberRecordWrapper"
+        LINKER_LANGUAGE CXX
+    )
+else ()
+    set_target_properties(
+        CyberRecordWrapper
+        PROPERTIES
+        PREFIX ""
+        OUTPUT_NAME "_cyber_record_wrapper"
+        LINKER_LANGUAGE CXX
+    )
+endif()
+
+target_include_directories(CyberRecordWrapper PRIVATE .
     ${Protobuf_INCLUDE_DIRS}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${PYTHON3_INCLUDE_DIRS}
     ${GLOG_INCLUDE_DIRS}
 )
 
-set_target_properties(
-    _cyber_record_wrapper
-    PROPERTIES
-    PREFIX ""
-    OUTPUT_NAME "_cyber_record_wrapper"
-    LINKER_LANGUAGE CXX
-)
-
-target_link_libraries(_cyber_record_wrapper ${PROTOBUF_LIBRARY} ${PYTHON3_LIBRARIES} ${GLOG_LIBRARIES})
+target_link_libraries(CyberRecordWrapper ${PROTOBUF_LIBRARY} ${PYTHON3_LIBRARIES} ${GLOG_LIBRARIES})
