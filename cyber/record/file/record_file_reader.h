@@ -74,7 +74,11 @@ bool RecordFileReader::ReadSection(int64_t size, T* message) {
   }
   FileInputStream raw_input(fd_, static_cast<int>(size));
   CodedInputStream coded_input(&raw_input);
+#if GOOGLE_PROTOBUF_VERSION >= 3011000
   coded_input.SetTotalBytesLimit(size);
+#else
+  coded_input.SetTotalBytesLimit(size, size);
+#endif
   CodedInputStream::Limit limit = coded_input.PushLimit(static_cast<int>(size));
   if (!message->ParseFromCodedStream(&coded_input)) {
     AERROR << "Parse section message failed.";

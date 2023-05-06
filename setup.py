@@ -64,7 +64,7 @@ class CMakeBuild(build_ext):
 
 setup(
     name = 'cyber-record-util',
-    version = '10',
+    version = '11',
     description = 'standalone apollo cyber record reader/writer',
     author = 'Wei Mingzhi',
     author_email = 'whistler@member.fsf.org',
