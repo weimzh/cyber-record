@@ -22,6 +22,7 @@ import collections
 import importlib
 import os
 import sys
+import json
 
 from google.protobuf.descriptor_pb2 import FileDescriptorProto
 
@@ -102,6 +103,12 @@ class RecordReader(object):
         Return message header string.
         """
         return _CYBER_RECORD.PyRecordReader_GetHeaderString(self.record_reader)
+
+    def get_header(self):
+        """
+        Return message header string.
+        """
+        return json.loads(_CYBER_RECORD.PyRecordReader_GetHeaderJson(self.record_reader))
 
     def reset(self):
         """

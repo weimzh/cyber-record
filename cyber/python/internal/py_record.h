@@ -34,6 +34,7 @@
 #include "cyber/record/record_message.h"
 #include "cyber/record/record_reader.h"
 #include "cyber/record/record_writer.h"
+#include <google/protobuf/util/json_util.h>
 
 namespace apollo {
 namespace cyber {
@@ -87,6 +88,12 @@ class PyRecordReader {
   std::string GetHeaderString() {
     std::string org_data;
     record_reader_->GetHeader().SerializeToString(&org_data);
+    return org_data;
+  }
+
+  std::string GetHeaderJson() {
+    std::string org_data;
+    google::protobuf::util::MessageToJsonString(record_reader_->GetHeader(), &org_data);
     return org_data;
   }
 

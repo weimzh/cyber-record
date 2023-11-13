@@ -206,6 +206,25 @@ PyObject *cyber_PyRecordReader_GetHeaderString(PyObject *self, PyObject *args) {
   return C_STR_TO_PY_BYTES(header_string);
 }
 
+PyObject *cyber_PyRecordReader_GetHeaderJson(PyObject *self, PyObject *args) {
+  PyObject *pyobj_reader = nullptr;
+  if (!PyArg_ParseTuple(
+          args, const_cast<char *>("O:cyber_PyRecordReader_GetHeaderJson"),
+          &pyobj_reader)) {
+    return PYOBJECT_NULL_STRING;
+  }
+
+  auto *reader = reinterpret_cast<PyRecordReader *>(PyCapsule_GetPointer(
+      pyobj_reader, "apollo_cyber_record_pyrecordfilereader"));
+  if (nullptr == reader) {
+    AERROR << "PyRecordReader_GetHeaderJson ptr is null!";
+    return PYOBJECT_NULL_STRING;
+  }
+
+  const std::string header_string = reader->GetHeaderJson();
+  return C_STR_TO_PY_BYTES(header_string);
+}
+
 PyObject *cyber_PyRecordReader_Reset(PyObject *self, PyObject *args) {
   PyObject *pyobj_reader = nullptr;
   if (!PyArg_ParseTuple(args,
@@ -532,6 +551,8 @@ static PyMethodDef _cyber_record_methods[] = {
     {"PyRecordReader_GetProtoDesc", cyber_PyRecordReader_GetProtoDesc,
      METH_VARARGS, ""},
     {"PyRecordReader_GetHeaderString", cyber_PyRecordReader_GetHeaderString,
+     METH_VARARGS, ""},
+    {"PyRecordReader_GetHeaderJson", cyber_PyRecordReader_GetHeaderJson,
      METH_VARARGS, ""},
     {"PyRecordReader_Reset", cyber_PyRecordReader_Reset, METH_VARARGS, ""},
     {"PyRecordReader_GetChannelList", cyber_PyRecordReader_GetChannelList,
